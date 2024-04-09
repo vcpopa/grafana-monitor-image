@@ -1,0 +1,36 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: "prometheus"
+    scrape_interval: 15s
+    static_configs:
+    - targets: ["localhost:9090"]
+
+  - job_name: live-server-resources
+    static_configs:
+    - targets: ["dsp1-sql-server:9182"]
+
+  - job_name: nwl-server-resources
+    static_configs:
+    - targets: ["dsp-nwl-sql-server:9182"]
+
+  - job_name: "dsp-live"
+    scrape_interval: 15s
+    static_configs:
+    - targets: ["dsp-live:4000"]
+
+  - job_name: "dsp-cnwl"
+    scrape_interval: 15s
+    static_configs:
+    - targets: ["dsp-cnwl:4000"]
+
+  - job_name: "dsp-nwl"
+    scrape_interval: 15s
+    static_configs:
+    - targets: ["dsp-nwl:4000"]
+
+  - job_name: "dsp-wlt"
+    scrape_interval: 15s
+    static_configs:
+    - targets: ["dsp-wlt:4000"]

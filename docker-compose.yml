@@ -5,32 +5,14 @@ networks:
 volumes:
   prometheus_data: {}
 services:
-  node-exporter:
-    image: prom/node-exporter:latest
-    container_name: node-exporter
-    restart: unless-stopped
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    command:
-      - '--path.procfs=/host/proc'
-      - '--path.rootfs=/rootfs'
-      - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
-    ports:
-      - 9100:9100
-    networks:
-      - monitoring
-
   prometheus:
     image: prom/prometheus:latest
     user: "1001"
-    environment:
-      - PUID=1001
-      - PGID=1001
     container_name: prometheus
     restart: unless-stopped
+    environment:
+      PROMETHEUS_PORT: 9090
+      PROMETHEUS_HOST: localhost
     volumes:
       - ./promgrafnode/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./promgrafnode/prometheus:/prometheus
@@ -49,38 +31,63 @@ services:
     image: grafana/grafana:latest
     user: "1001"
     container_name: grafana
+    restart: unless-stopped
     ports:
       - 3000:3000
-    restart: unless-stopped
     volumes:
       - ./promgrafnode/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
       - ./promgrafnode/grafana:/var/lib/grafana
     networks:
       - monitoring
-
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    container_name: cadvisor
-    ports:
-      - 8081:8080
-    networks:
-      - monitoring
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-
-  prometheus-mssql-exporter:
+  dsp-live:
     image: awaragi/prometheus-mssql-exporter
-    container_name: prometheus-mssql-exporter
+    container_name: dsp-live
+    restart: unless-stopped
     environment:
-      - SERVER=
-      - USERNAME=
-      - PASSWORD=
-      - DEBUG=app
+      SERVER: ${DSP_SERVER}
+      USERNAME: ${DSP_USERNAME}
+      PASSWORD: ${DSP_PASSWORD}
     ports:
-      - 4000:4000
+      - ${DSP_PROMETHEUS_PORT}:4000
     networks:
       - monitoring
+  dsp-cnwl:
+    image: awaragi/prometheus-mssql-exporter
+    container_name: dsp-cnwl
     restart: unless-stopped
+    environment:
+      SERVER: ${CNWL_SERVER}
+      PORT: ${CNWL_PORT}
+      USERNAME: ${CNWL_USERNAME}
+      PASSWORD: ${CNWL_PASSWORD}
+    ports:
+      - ${CNWL_PROMETHEUS_PORT}:4000
+    networks:
+      - monitoring
+  
+  dsp-nwl:
+    image: awaragi/prometheus-mssql-exporter
+    container_name: dsp-nwl
+    restart: unless-stopped
+    environment:
+      SERVER: ${NWL_SERVER}
+      PORT: ${NWL_PORT}
+      USERNAME: ${NWL_USERNAME}
+      PASSWORD: ${NWL_PASSWORD}
+    ports:
+      - ${NWL_PROMETHEUS_PORT}:4000
+    networks:
+      - monitoring
+
+  dsp-wlt:
+    image: awaragi/prometheus-mssql-exporter
+    container_name: dsp-wlt
+    restart: unless-stopped
+    environment:
+      SERVER: ${WLT_SERVER}
+      USERNAME: ${WLT_USERNAME}
+      PASSWORD: ${WLT_PASSWORD}
+    ports:
+      - ${WLT_PROMETHEUS_PORT}:4000
+    networks:
+      - monitoring
