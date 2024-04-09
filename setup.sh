@@ -20,22 +20,17 @@ prometheusPath="$rootPath/promgrafnode/prometheus"
 grafanaPath="$rootPath/promgrafnode/grafana/provisioning"
 prometheusFile="$rootPath/prometheus.yml"
 
-# Create folders
-mkdir -p "$prometheusPath"
-if [ $? -ne 0 ]; then
-    error_exit "Failed to create folder structure."
+# Check if folders already exist
+if [ -d "$prometheusPath" ] || [ -d "$grafanaPath" ]; then
+    error_exit "Prometheus or Grafana folders already exist. Proceed with caution."
 fi
 
-mkdir -p "$grafanaPath"
-if [ $? -ne 0 ]; then
-    error_exit "Failed to create folder structure."
-fi
+# Create folders
+mkdir -p "$prometheusPath" || error_exit "Failed to create prometheus directory."
+mkdir -p "$grafanaPath" || error_exit "Failed to create grafana directory."
 
 # Copy prometheus.yml
-cp "$prometheusFile" "$prometheusPath"
-if [ $? -ne 0 ]; then
-    error_exit "Failed to copy prometheus.yml."
-fi
+cp "$prometheusFile" "$prometheusPath" || error_exit "Failed to copy prometheus.yml."
 
 # Display success message
 success_message
