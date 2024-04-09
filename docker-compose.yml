@@ -27,6 +27,16 @@ services:
     networks:
       - monitoring
 
+  promteams:
+    image: quay.io/prometheusmsteams/prometheus-msteams
+    container_name: promteams
+    ports:
+      - "2000:2000"
+    environment:
+      TEAMS_INCOMING_WEBHOOK_URL: ${TEAMS_HOOK_URL}
+      TEMPLATE_FILE: "/tmp/card.tmpl"
+    volumes:
+      - /default-message-template.tmpl:/tmp/card.tmpl
   grafana:
     image: grafana/grafana:latest
     user: "1001"
@@ -64,7 +74,7 @@ services:
       - ${CNWL_PROMETHEUS_PORT}:4000
     networks:
       - monitoring
-  
+
   dsp-nwl:
     image: awaragi/prometheus-mssql-exporter
     container_name: dsp-nwl
