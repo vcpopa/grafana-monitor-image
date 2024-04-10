@@ -27,26 +27,18 @@ services:
     networks:
       - monitoring
 
-  promteams:
-    image: quay.io/prometheusmsteams/prometheus-msteams
-    container_name: promteams
-    ports:
-      - "2000:2000"
-    environment:
-      TEAMS_INCOMING_WEBHOOK_URL: ${TEAMS_HOOK_URL}
-      TEMPLATE_FILE: "/tmp/card.tmpl"
-    volumes:
-      - /default-message-template.tmpl:/tmp/card.tmpl
   grafana:
     image: grafana/grafana:latest
     user: "1001"
     container_name: grafana
     restart: unless-stopped
-    ports:
-      - 3000:3000
+    environment:
+      GF_SERVER_ROOT_URL: ${TAILSCALE_DNS}
     volumes:
       - ./promgrafnode/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
       - ./promgrafnode/grafana:/var/lib/grafana
+    ports:
+      - 3000:3000
     networks:
       - monitoring
   dsp-live:
