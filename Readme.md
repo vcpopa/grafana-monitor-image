@@ -6,7 +6,7 @@ This repository provides a comprehensive setup for monitoring using Grafana, Pro
 
 Follow these steps to set up the monitoring environment on both Windows and Linux:
 
-**Prerequisites**
+### Prerequisites
 
 - Docker
 - Docker Compose
@@ -33,17 +33,13 @@ Adjust the values of these variables according to your SQL server configuration.
 
 Open PowerShell as Administrator.
 Navigate to the root directory of the cloned repository.
-Execute the setup script:
-
-**.\setup.ps1**
+Execute the setup script: **.\setup.ps1**
 
 ### Linux
 
 Open a terminal.
 Navigate to the root directory of the cloned repository.
-Execute the setup script:
-
-**./setup.sh**
+Execute the setup script: **./setup.sh**
 
 This script performs the following actions:
 

@@ -19,13 +19,19 @@ $prometheusPath = Join-Path -Path $rootPath -ChildPath "promgrafnode\prometheus"
 $grafanaPath = Join-Path -Path $rootPath -ChildPath "promgrafnode\grafana\provisioning"
 $prometheusFile = Join-Path -Path $rootPath -ChildPath "prometheus.yml"
 
+# Check if folders already exist
+if (Test-Path -Path $prometheusPath -or Test-Path -Path $grafanaPath) {
+    error_exit "Prometheus or Grafana folders already exist. Proceed with caution."
+}
 
 # Create folders
-if (-not (Test-Path -Path $prometheusPath)) {
-    New-Item -ItemType Directory -Force -Path $prometheusPath
+New-Item -ItemType Directory -Force -Path $prometheusPath
+if (-not $?) {
+    error_exit "Failed to create prometheus directory."
 }
-if (-not (Test-Path -Path $grafanaPath)) {
-    New-Item -ItemType Directory -Force -Path $grafanaPath
+New-Item -ItemType Directory -Force -Path $grafanaPath
+if (-not $?) {
+    error_exit "Failed to create grafana directory."
 }
 
 # Copy prometheus.yml and .env
