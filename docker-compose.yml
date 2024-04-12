@@ -93,3 +93,43 @@ services:
       - ${WLT_PROMETHEUS_PORT}:4000
     networks:
       - monitoring
+
+  dsp-nnpc:
+    image: awaragi/prometheus-mssql-exporter
+    container_name: dsp-nnpc
+    restart: unless-stopped
+    environment:
+      SERVER: ${NNPC_SERVER}
+      PORT: ${NNPC_PORT}
+      USERNAME: ${NNPC_USERNAME}
+      PASSWORD: ${NNPC_PASSWORD}
+    ports:
+      - ${NNPC_PROMETHEUS_PORT}:4000
+    networks:
+      - monitoring
+
+  dsp-dhcft:
+    image: awaragi/prometheus-mssql-exporter
+    container_name: dsp-dhcft
+    restart: unless-stopped
+    environment:
+      SERVER: ${DHCFT_SERVER}
+      USERNAME: ${DHCFT_USERNAME}
+      PASSWORD: ${DHCFT_PASSWORD}
+    ports:
+      - ${DHCFT_PROMETHEUS_PORT}:4000
+    networks:
+      - monitoring
+
+  dsp-sabp:
+    image: awaragi/prometheus-mssql-exporter
+    container_name: dsp-sabp
+    restart: unless-stopped
+    environment:
+      SERVER: ${SABP_SERVER}
+      USERNAME: ${SABP_USERNAME}
+      PASSWORD: ${SABP_PASSWORD}
+    ports:
+      - ${SABP_PROMETHEUS_PORT}:4000
+    networks:
+      - monitoring
