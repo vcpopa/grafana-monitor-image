@@ -6,31 +6,115 @@ scrape_configs:
     scrape_interval: 15s
     static_configs:
     - targets: ["localhost:9090"]
+    metric_relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: (.*)
+        replacement: "Prometheus"
 
   - job_name: live-server-resources
     static_configs:
     - targets: ["dsp1-sql-server:9182"]
+    metric_relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: (.*)
+        replacement: "DSP Live Server Resources"
 
   - job_name: nwl-server-resources
     static_configs:
     - targets: ["dsp-nwl-sql-server:9182"]
+    metric_relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: (.*)
+        replacement: "NWL Server Resources"
+
+  - job_name: dhcft-server-resources
+    static_configs:
+    - targets: ["dsp-dhcft-sql-server:9182"]
+    metric_relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: (.*)
+        replacement: "DHCFT Server Resources"
+
+  - job_name: sabp-server-resources
+    static_configs:
+    - targets: ["sabp-dhcft-sql-server:9182"]
+    metric_relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: (.*)
+        replacement: "SABP Server Resources"
 
   - job_name: "dsp-live"
     scrape_interval: 15s
     static_configs:
     - targets: ["dsp-live:4000"]
+    metric_relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: (.*)
+        replacement: "DSP Live SQL Server"
 
   - job_name: "dsp-cnwl"
     scrape_interval: 15s
     static_configs:
     - targets: ["dsp-cnwl:4000"]
+    metric_relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: (.*)
+        replacement: "CNWL SQL Server"
 
   - job_name: "dsp-nwl"
     scrape_interval: 15s
     static_configs:
     - targets: ["dsp-nwl:4000"]
+    metric_relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: (.*)
+        replacement: NWL SQL Server"
 
   - job_name: "dsp-wlt"
     scrape_interval: 15s
     static_configs:
     - targets: ["dsp-wlt:4000"]
+    metric_relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: (.*)
+        replacement: "WLT SQL Server"
+
+  - job_name: "dsp-sabp"
+    scrape_interval: 15s
+    static_configs:
+    - targets: ["dsp-sabp:4000"]
+    metric_relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: (.*)
+        replacement: "SABP SQL Server"
+
+  - job_name: "dsp-nnpc"
+    scrape_interval: 15s
+    static_configs:
+    - targets: ["dsp-nnpc:4000"]
+    metric_relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: (.*)
+        replacement: "NNPC SQL Server"
+
+  - job_name: "dsp-dhcft"
+    scrape_interval: 15s
+    static_configs:
+    - targets: ["dsp-dhcft:4000"]
+    metric_relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: (.*)
+        replacement: "DHCFT SQL Server"
+
